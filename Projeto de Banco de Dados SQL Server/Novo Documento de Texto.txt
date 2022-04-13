@@ -1,0 +1,2 @@
+Projeto de Banco de dados em SQL Server, armazenando dados 
+de clientes de uma agência de publicidade.

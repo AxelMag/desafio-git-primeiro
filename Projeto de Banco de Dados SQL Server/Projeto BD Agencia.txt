@@ -1,0 +1,90 @@
+CREATE TABLE DEPARTAMENTO (
+  id_Depto INTEGER NOT NULL,
+  nome_Depto VARCHAR(20) NULL,
+  PRIMARY KEY(id_Depto)
+);
+CREATE TABLE EMPREGADO (
+  id_Empregado INTEGER NOT NULL,
+  DEPARTAMENTO_id_Depto INTEGER NOT NULL,
+  nome_Empregado VARCHAR(20) NOT NULL,
+  cargo VARCHAR(20) NULL,
+  email VARCHAR(45) NULL,
+  PRIMARY KEY(id_Empregado),
+  INDEX EMPREGADO_FKIndex1(DEPARTAMENTO_id_Depto)
+);
+CREATE TABLE CLIENTE (
+  id_Cliente INTEGER NOT NULL,
+  responsavel VARCHAR(45) NOT NULL,
+  rg_Responsavel INTEGER NOT NULL,
+  cpf_Responsavel INTEGER NOT NULL,
+  nome_Cliente VARCHAR(45) NULL,
+  telefone INTEGER NULL,
+  endereco VARCHAR(45) NULL,
+  email VARCHAR(45) NULL,
+  idade INTEGER NULL,
+  PRIMARY KEY(id_Cliente, responsavel, rg_Responsavel, cpf_Responsavel)
+);
+CREATE TABLE FICHA_CLIENTE (
+  nome_Artistico VARCHAR(45) NOT NULL,
+  CLIENTE_cpf_Responsavel INTEGER NOT NULL,
+  CLIENTE_rg_Responsavel INTEGER NOT NULL,
+  CLIENTE_responsavel VARCHAR(45) NOT NULL,
+  CLIENTE_id_Cliente INTEGER NOT NULL,
+  idade INTEGER NULL,
+  altura FLOAT NULL,
+  peso FLOAT NULL,
+  manequim INTEGER NULL,
+  sapato INTEGER NULL,
+  busto FLOAT NULL,
+  cintura FLOAT NULL,
+  quadril FLOAT NULL,
+  PRIMARY KEY(nome_Artistico),
+  INDEX FICHA_CLIENTE_FKIndex1(CLIENTE_id_Cliente, CLIENTE_responsavel, CLIENTE_rg_Responsavel, CLIENTE_cpf_Responsavel)
+);
+CREATE TABLE PRODUTO (
+  id_Produto INTEGER NOT NULL,
+  tipo_Produto VARCHAR(20) NULL,
+  valor_Produto FLOAT NULL,
+  PRIMARY KEY(id_Produto)
+);
+CREATE TABLE PEDIDO_CLIENTE (
+  id_Pedido INTEGER NOT NULL,
+  CLIENTE_cpf_Responsavel INTEGER NOT NULL,
+  CLIENTE_rg_Responsavel INTEGER NOT NULL,
+  CLIENTE_responsavel VARCHAR(45) NOT NULL,
+  EMPREGADO_id_Empregado INTEGER NOT NULL,
+  PRODUTO_id_Produto INTEGER NOT NULL,
+  CLIENTE_id_Cliente INTEGER NOT NULL,
+  data_Pedido DATETIME NULL,
+  PRIMARY KEY(id_Pedido),
+  INDEX PEDIDO_CLIENTE_FKIndex1(CLIENTE_id_Cliente, CLIENTE_responsavel, CLIENTE_rg_Responsavel, CLIENTE_cpf_Responsavel),
+  INDEX PEDIDO_CLIENTE_FKIndex2(PRODUTO_id_Produto),
+  INDEX PEDIDO_CLIENTE_FKIndex3(EMPREGADO_id_Empregado)
+);
+CREATE TABLE PAGAMENTO (
+  id_Pagamento INTEGER NOT NULL,
+  valor_Pagamento FLOAT NOT NULL,
+  PEDIDO_CLIENTE_id_Pedido INTEGER NOT NULL,
+  forma_Pagamento VARCHAR NOT NULL,
+  data_pagamento DATE NOT NULL,
+  PRIMARY KEY(id_Pagamento, valor_Pagamento),
+  INDEX PAGAMENTO_FKIndex1(PEDIDO_CLIENTE_id_Pedido)
+);
+CREATE TABLE CONTRATO (
+  id_Contrato INTEGER NOT NULL,
+  PAGAMENTO_valor_Pagamento FLOAT NOT NULL,
+  CLIENTE_cpf_Responsavel INTEGER NOT NULL,
+  CLIENTE_rg_Responsavel INTEGER NOT NULL,
+  CLIENTE_responsavel VARCHAR(45) NOT NULL,
+  EMPREGADO_id_Empregado INTEGER NOT NULL,
+  PEDIDO_CLIENTE_id_Pedido INTEGER NOT NULL,
+  CLIENTE_id_Cliente INTEGER NOT NULL,
+  PAGAMENTO_id_Pagamento INTEGER NOT NULL,
+  data_Contrato DATE NOT NULL,
+  data_Entrega DATE NOT NULL,
+  PRIMARY KEY(id_Contrato),
+  INDEX CONTRATO_FKIndex1(PAGAMENTO_id_Pagamento, PAGAMENTO_valor_Pagamento),
+  INDEX CONTRATO_FKIndex2(CLIENTE_id_Cliente, CLIENTE_responsavel, CLIENTE_rg_Responsavel, CLIENTE_cpf_Responsavel),
+  INDEX CONTRATO_FKIndex3(PEDIDO_CLIENTE_id_Pedido),
+  INDEX CONTRATO_FKIndex4(EMPREGADO_id_Empregado)
+);
